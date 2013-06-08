@@ -102,7 +102,7 @@ type VKey   = DWORD
  , vK_SCROLL    = VK_SCROLL
  }
 
-foreign import WINDOWS_CCONV unsafe "windows.h EnableWindow"
+foreign import WINDOWS_CCONV safe "windows.h EnableWindow"
   enableWindow :: HWND -> Bool -> IO Bool
 
 getActiveWindow :: IO (Maybe HWND)
