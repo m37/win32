@@ -86,8 +86,7 @@ foreign import WINDOWS_CCONV unsafe "windows.h CheckRadioButton"
   c_CheckRadioButton :: HWND -> Int -> Int -> Int -> IO Bool
 
 isDlgButtonChecked :: HWND -> Int -> IO ButtonState
-isDlgButtonChecked wnd button =
-  failIfZero "IsDlgButtonChecked" $ c_IsDlgButtonChecked wnd button
+isDlgButtonChecked wnd button = c_IsDlgButtonChecked wnd button
 foreign import WINDOWS_CCONV unsafe "windows.h IsDlgButtonChecked"
   c_IsDlgButtonChecked :: HWND -> Int -> IO ButtonState
 
