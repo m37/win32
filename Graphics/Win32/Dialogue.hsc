@@ -260,7 +260,7 @@ foreign import WINDOWS_CCONV "windows.h GetDlgItemInt"
 getDlgItemText :: HWND -> Int -> Int -> IO String
 getDlgItemText dlg item size =
   allocaArray size $ \ p_buf -> do
-  _ <- failIfZero "GetDlgItemInt" $ c_GetDlgItemText dlg item p_buf size
+  _ <- failIfZero "GetDlgItemText" $ c_GetDlgItemText dlg item p_buf size
   peekTString p_buf
 foreign import WINDOWS_CCONV "windows.h GetDlgItemTextW"
   c_GetDlgItemText :: HWND -> Int -> LPTSTR -> Int -> IO Int
