@@ -87,7 +87,7 @@ checkMenuRadioItem menu first_id last_id check flags =
   failIfFalse_ "CheckMenuRadioItem" $
     c_CheckMenuRadioItem menu first_id last_id check flags
 foreign import WINDOWS_CCONV unsafe "windows.h CheckMenuRadioItem"
-  c_CheckMenuRadioItem :: HMENU -> UINT -> UINT -> UINT -> UINT -> IO Bool
+  c_CheckMenuRadioItem :: HMENU -> UINT -> UINT -> UINT -> UINT -> IO BOOL
 
 createMenu :: IO HMENU
 createMenu =
@@ -105,7 +105,7 @@ drawMenuBar :: HWND -> IO ()
 drawMenuBar wnd =
   failIfFalse_ "DrawMenuBar" $ c_DrawMenuBar wnd
 foreign import WINDOWS_CCONV unsafe "windows.h DrawMenuBar"
-  c_DrawMenuBar :: HWND -> IO Bool
+  c_DrawMenuBar :: HWND -> IO BOOL
 
 type MenuState = MenuFlag
 
@@ -212,13 +212,13 @@ type SystemMenuCommand = UINT
  , sC_SEPARATOR         = SC_SEPARATOR
  }
 
-foreign import WINDOWS_CCONV unsafe "windows.h IsMenu" isMenu :: HMENU -> IO Bool
+foreign import WINDOWS_CCONV unsafe "windows.h IsMenu" isMenu :: HMENU -> IO BOOL
 
 getSystemMenu :: HWND  -> Bool ->     IO (Maybe HMENU)
 getSystemMenu wnd revert =
   liftM ptrToMaybe $ c_GetSystemMenu wnd revert
 foreign import WINDOWS_CCONV unsafe "windows.h GetSystemMenu"
-  c_GetSystemMenu :: HWND  -> Bool ->     IO HMENU
+  c_GetSystemMenu :: HWND  -> BOOL ->     IO HMENU
 
 getMenu :: HWND  ->             IO (Maybe HMENU)
 getMenu wnd =
@@ -228,9 +228,9 @@ foreign import WINDOWS_CCONV unsafe "windows.h GetMenu"
 
 getMenuDefaultItem :: HMENU -> Bool -> GMDIFlag -> IO MenuItem
 getMenuDefaultItem menu bypos flags =
-  failIf (== -1) "GetMenuDefaultItem" $ c_GetMenuDefaultItem menu bypos flags
+  failIf (== -1) "GetMenuDefaultItem" $ c_GetMenuDefaultItem menu (fromBool bypos) flags
 foreign import WINDOWS_CCONV unsafe "windows.h GetMenuDefaultItem"
-  c_GetMenuDefaultItem :: HMENU -> Bool -> UINT -> IO UINT
+  c_GetMenuDefaultItem :: HMENU -> UINT -> UINT -> IO UINT
 
 getMenuState :: HMENU -> MenuItem -> MenuFlag -> IO MenuState
 getMenuState menu item flags =
@@ -248,7 +248,7 @@ setMenu :: HWND -> HMENU -> IO ()
 setMenu wnd menu =
   failIfFalse_ "SetMenu" $ c_SetMenu wnd menu
 foreign import WINDOWS_CCONV unsafe "windows.h SetMenu"
-  c_SetMenu :: HWND -> HMENU -> IO Bool
+  c_SetMenu :: HWND -> HMENU -> IO BOOL
 
 getMenuItemCount :: HMENU -> IO Int
 getMenuItemCount menu =
@@ -344,7 +344,7 @@ getMenuItemInfo menu item bypos mask =
   failIfFalse_ "GetMenuItemInfo" $ c_GetMenuItemInfo menu item bypos p_info
   peekMenuItemInfo p_info
 foreign import WINDOWS_CCONV unsafe "windows.h GetMenuItemInfoW"
-  c_GetMenuItemInfo :: HMENU -> UINT -> Bool -> Ptr MenuItemInfo -> IO Bool
+  c_GetMenuItemInfo :: HMENU -> UINT -> BOOL -> Ptr MenuItemInfo -> IO BOOL
 
 getMenuItemRect :: HWND -> HMENU -> MenuItem -> IO RECT
 getMenuItemRect wnd menu item =
@@ -352,17 +352,17 @@ getMenuItemRect wnd menu item =
   failIfFalse_ "GetMenuItemRect" $ c_GetMenuItemRect wnd menu item p_rect
   peekRECT p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h GetMenuItemRect"
-  c_GetMenuItemRect :: HWND -> HMENU -> UINT -> LPRECT -> IO Bool
+  c_GetMenuItemRect :: HWND -> HMENU -> UINT -> LPRECT -> IO BOOL
 
 foreign import WINDOWS_CCONV unsafe "windows.h HiliteMenuItem"
-  hiliteMenuItem :: HWND  -> HMENU -> MenuItem -> MenuFlag -> IO Bool
+  hiliteMenuItem :: HWND  -> HMENU -> MenuItem -> MenuFlag -> IO BOOL
 
 insertMenuItem :: HMENU -> MenuItem -> Bool -> MenuItemInfo -> IO ()
 insertMenuItem menu item bypos info =
   withMenuItemInfo info $ \ p_info ->
   failIfFalse_ "InsertMenuItem" $ c_InsertMenuItem menu item bypos p_info
 foreign import WINDOWS_CCONV unsafe "windows.h InsertMenuItemW"
-  c_InsertMenuItem :: HMENU -> UINT -> Bool -> Ptr MenuItemInfo -> IO Bool
+  c_InsertMenuItem :: HMENU -> UINT -> BOOL -> Ptr MenuItemInfo -> IO BOOL
 
 type Menu = LPCTSTR
 -- intToMenu :: Int -> Menu
@@ -386,9 +386,9 @@ menuItemFromPoint wnd menu pt =
 
 setMenuDefaultItem :: HMENU -> MenuItem -> Bool -> IO ()
 setMenuDefaultItem menu item bypos =
-  failIfFalse_ "SetMenuDefaultItem" $ c_SetMenuDefaultItem menu item bypos
+  failIfFalse_ "SetMenuDefaultItem" $ c_SetMenuDefaultItem menu item (fromBool bypos)
 foreign import WINDOWS_CCONV unsafe "windows.h SetMenuDefaultItem"
-  c_SetMenuDefaultItem :: HMENU -> MenuItem -> Bool -> IO Bool
+  c_SetMenuDefaultItem :: HMENU -> MenuItem -> UINT -> IO BOOL
 
 setMenuItemBitmaps :: HMENU -> MenuItem -> MenuFlag -> HBITMAP -> HBITMAP -> IO ()
 setMenuItemBitmaps menu pos flags bm_unchecked bm_checked =
@@ -401,13 +401,13 @@ destroyMenu :: HMENU -> IO ()
 destroyMenu menu =
   failIfFalse_ "DestroyMenu" $ c_DestroyMenu menu
 foreign import WINDOWS_CCONV unsafe "windows.h DestroyMenu"
-  c_DestroyMenu :: HMENU -> IO Bool
+  c_DestroyMenu :: HMENU -> IO BOOL
 
 deleteMenu :: HMENU -> MenuItem -> MenuFlag -> IO ()
 deleteMenu menu item flag =
   failIfFalse_ "DeleteMenu" $ c_DeleteMenu menu item flag
 foreign import WINDOWS_CCONV unsafe "windows.h DeleteMenu"
-  c_DeleteMenu :: HMENU -> UINT -> UINT -> IO Bool
+  c_DeleteMenu :: HMENU -> UINT -> UINT -> IO BOOL
 
 setMenuItemInfo :: HMENU -> MenuItem -> Bool -> MenuItemMask -> MenuItemInfo -> IO ()
 setMenuItemInfo menu item bypos mask info =
@@ -415,14 +415,14 @@ setMenuItemInfo menu item bypos mask info =
   pokeFMask p_info mask
   failIfFalse_ "SetMenuItemInfo" $ c_SetMenuItemInfo menu item bypos p_info
 foreign import WINDOWS_CCONV unsafe "windows.h SetMenuItemInfoW"
-  c_SetMenuItemInfo :: HMENU -> UINT -> Bool -> Ptr MenuItemInfo -> IO Bool
+  c_SetMenuItemInfo :: HMENU -> UINT -> BOOL -> Ptr MenuItemInfo -> IO BOOL
 
 trackPopupMenu :: HMENU -> TrackMenuFlag -> Int -> Int -> HWND -> RECT -> IO ()
 trackPopupMenu menu flags x y wnd rect =
   withRECT rect $ \ p_rect ->
   failIfFalse_ "TrackPopupMenu" $ c_TrackPopupMenu menu flags x y 0 wnd p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h TrackPopupMenu"
-  c_TrackPopupMenu :: HMENU -> TrackMenuFlag -> Int -> Int -> Int -> HWND -> LPRECT -> IO Bool
+  c_TrackPopupMenu :: HMENU -> TrackMenuFlag -> Int -> Int -> Int -> HWND -> LPRECT -> IO BOOL
 
 type TPMPARAMS = ()
 
@@ -439,7 +439,7 @@ trackPopupMenuEx menu flags x y wnd mb_p_rect =
   maybeWith withTPMPARAMS mb_p_rect $ \ p_ptmp ->
   failIfFalse_ "TrackPopupMenuEx" $ c_TrackPopupMenuEx menu flags x y wnd p_ptmp
 foreign import WINDOWS_CCONV unsafe "windows.h TrackPopupMenuEx"
-  c_TrackPopupMenuEx :: HMENU -> TrackMenuFlag -> Int -> Int -> HWND -> Ptr TPMPARAMS -> IO Bool
+  c_TrackPopupMenuEx :: HMENU -> TrackMenuFlag -> Int -> Int -> HWND -> Ptr TPMPARAMS -> IO BOOL
 
 -- Note: these 3 assume the flags don't include MF_BITMAP or MF_OWNERDRAW
 -- (which are hidden by this interface)
@@ -449,27 +449,27 @@ appendMenu menu flags id_item name =
   withTString name $ \ c_name ->
   failIfFalse_ "AppendMenu" $ c_AppendMenu menu flags id_item c_name
 foreign import WINDOWS_CCONV unsafe "windows.h AppendMenuW"
-  c_AppendMenu :: HMENU -> UINT -> MenuID -> LPCTSTR -> IO Bool
+  c_AppendMenu :: HMENU -> UINT -> MenuID -> LPCTSTR -> IO BOOL
 
 insertMenu :: HMENU -> MenuItem -> MenuFlag -> MenuID -> String -> IO ()
 insertMenu menu item flags id_item name =
   withTString name $ \ c_name ->
   failIfFalse_ "InsertMenu" $ c_InsertMenu menu item flags id_item c_name
 foreign import WINDOWS_CCONV unsafe "windows.h InsertMenuW"
-  c_InsertMenu :: HMENU -> UINT -> UINT -> MenuID -> LPCTSTR -> IO Bool
+  c_InsertMenu :: HMENU -> UINT -> UINT -> MenuID -> LPCTSTR -> IO BOOL
 
 modifyMenu :: HMENU -> MenuItem -> MenuFlag -> MenuID -> String -> IO ()
 modifyMenu menu item flags id_item name =
   withTString name $ \ c_name ->
   failIfFalse_ "ModifyMenu" $ c_ModifyMenu menu item flags id_item c_name
 foreign import WINDOWS_CCONV unsafe "windows.h ModifyMenuW"
-  c_ModifyMenu :: HMENU -> UINT -> UINT -> MenuID -> LPCTSTR -> IO Bool
+  c_ModifyMenu :: HMENU -> UINT -> UINT -> MenuID -> LPCTSTR -> IO BOOL
 
 removeMenu :: HMENU -> MenuItem -> MenuFlag -> IO ()
 removeMenu menu pos flags =
   failIfFalse_ "RemoveMenu" $ c_RemoveMenu menu pos flags
 foreign import WINDOWS_CCONV unsafe "windows.h RemoveMenu"
-  c_RemoveMenu :: HMENU -> UINT -> UINT -> IO Bool
+  c_RemoveMenu :: HMENU -> UINT -> UINT -> IO BOOL
 
 ----------------------------------------------------------------
 -- End
