@@ -51,7 +51,8 @@ type LONG          = Int32
 type FLOAT         = Float
 type LARGE_INTEGER = Int64
 
-type UINT_PTR      = Word
+type INT_PTR       = CIntPtr
+type UINT_PTR      = CUIntPtr
 
 -- Not really a basic type, but used in many places
 type DDWORD        = Word64
