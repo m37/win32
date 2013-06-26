@@ -15,7 +15,7 @@
  * since it takes a relatively long time to draw 1000 edges.
  */
 
-int transformedEllipse(
+BOOL transformedEllipse(
 	HDC hdc, LONG x0, LONG y0, LONG x1, LONG y1, LONG x2, LONG y2) {
   static BOOL firstTime = 1;
   static double sins[20];
