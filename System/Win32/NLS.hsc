@@ -98,7 +98,7 @@ setLocaleInfo locale ty info =
   withTString info $ \ c_info ->
   failIfFalse_ "SetLocaleInfo" $ c_SetLocaleInfo locale ty c_info
 foreign import WINDOWS_CCONV unsafe "windows.h SetLocaleInfoW"
-  c_SetLocaleInfo :: LCID -> LCTYPE -> LPCTSTR -> IO Bool
+  c_SetLocaleInfo :: LCID -> LCTYPE -> LPCTSTR -> IO BOOL
 
 type LCMapFlags = DWORD
 
@@ -140,10 +140,10 @@ type LocaleTestFlags = DWORD
  }
 
 foreign import WINDOWS_CCONV unsafe "windows.h IsValidLocale"
-  isValidLocale :: LCID -> LocaleTestFlags -> IO Bool
+  isValidLocale :: LCID -> LocaleTestFlags -> IO BOOL
 
 foreign import WINDOWS_CCONV unsafe "windows.h IsValidCodePage"
-  isValidCodePage :: CodePage -> IO Bool
+  isValidCodePage :: CodePage -> IO BOOL
 
 foreign import WINDOWS_CCONV unsafe "windows.h GetUserDefaultLCID"
   getUserDefaultLCID :: LCID
