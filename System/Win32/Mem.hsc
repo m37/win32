@@ -269,4 +269,4 @@ virtualUnlock :: Addr -> DWORD -> IO ()
 virtualUnlock addr size =
   failIfFalse_ "VirtualUnlock" $ c_VirtualUnlock addr size
 foreign import WINDOWS_CCONV unsafe "windows.h VirtualUnlock"
-  c_VirtualUnlock :: Addr -> DWORD -> IO Bool
+  c_VirtualUnlock :: Addr -> DWORD -> IO BOOL
