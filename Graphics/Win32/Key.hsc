@@ -103,7 +103,7 @@ type VKey   = DWORD
  }
 
 foreign import WINDOWS_CCONV unsafe "windows.h EnableWindow"
-  enableWindow :: HWND -> Bool -> IO Bool
+  enableWindow :: HWND -> BOOL -> IO BOOL
 
 getActiveWindow :: IO (Maybe HWND)
 getActiveWindow = liftM ptrToMaybe c_GetActiveWindow
@@ -122,4 +122,4 @@ foreign import WINDOWS_CCONV unsafe "windows.h GetKBCodePage"
   getKBCodePage :: IO UINT
 
 foreign import WINDOWS_CCONV unsafe "windows.h IsWindowEnabled"
-  isWindowEnabled :: HWND -> IO Bool
+  isWindowEnabled :: HWND -> IO BOOL
