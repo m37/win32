@@ -72,6 +72,8 @@ type POINT =
   , LONG  -- y
   )
 
+type LPPOINT = Ptr POINT
+
 sizeofPOINT :: Int
 sizeofPOINT = #{size POINT}
 
