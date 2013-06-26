@@ -215,7 +215,7 @@ deleteBitmap :: HBITMAP -> IO ()
 deleteBitmap bitmap =
   failIfFalse_ "DeleteBitmap" $ c_DeleteBitmap bitmap
 foreign import WINDOWS_CCONV unsafe "windows.h DeleteObject"
-  c_DeleteBitmap :: HBITMAP -> IO Bool
+  c_DeleteBitmap :: HBITMAP -> IO BOOL
 
 createBitmap :: INT -> INT -> UINT -> UINT -> Maybe LPVOID -> IO HBITMAP
 createBitmap w h planes bits mb_color_data =
@@ -252,7 +252,7 @@ getBitmapDimensionEx bm =
   failIfFalse_ "GetBitmapDimensionEx" $ c_GetBitmapDimensionEx bm p_size
   peekSIZE p_size
 foreign import WINDOWS_CCONV unsafe "windows.h GetBitmapDimensionEx"
-  c_GetBitmapDimensionEx :: HBITMAP -> Ptr SIZE -> IO Bool
+  c_GetBitmapDimensionEx :: HBITMAP -> Ptr SIZE -> IO BOOL
 
 setBitmapDimensionEx :: HBITMAP -> SIZE -> IO SIZE
 setBitmapDimensionEx bm (cx,cy) =
@@ -261,7 +261,7 @@ setBitmapDimensionEx bm (cx,cy) =
     c_SetBitmapDimensionEx bm cx cy p_size
   peekSIZE p_size
 foreign import WINDOWS_CCONV unsafe "windows.h SetBitmapDimensionEx"
-  c_SetBitmapDimensionEx :: HBITMAP -> LONG -> LONG -> Ptr SIZE -> IO Bool
+  c_SetBitmapDimensionEx :: HBITMAP -> CInt -> CInt -> Ptr SIZE -> IO BOOL
 
 getBitmapInfo :: HBITMAP -> IO BITMAP
 getBitmapInfo bm =
@@ -269,7 +269,7 @@ getBitmapInfo bm =
   failIfFalse_ "GetBitmapInfo" $ c_GetBitmapInfo bm sizeofBITMAP p_bm
   peekBITMAP p_bm
 foreign import WINDOWS_CCONV unsafe "windows.h GetObjectW"
-  c_GetBitmapInfo :: HBITMAP -> DWORD -> LPBITMAP -> IO Bool
+  c_GetBitmapInfo :: HBITMAP -> CInt -> LPBITMAP -> IO BOOL
 
 ----------------------------------------------------------------
 --
