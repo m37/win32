@@ -101,49 +101,49 @@ foreign import WINDOWS_CCONV unsafe "windows.h CreatePolygonRgn"
 -- Needs to do proper error test for EqualRgn; GSL ???
 
 foreign import WINDOWS_CCONV unsafe "windows.h EqualRgn"
-  equalRgn :: PRGN -> PRGN -> IO Bool
+  equalRgn :: PRGN -> PRGN -> IO BOOL
 
 fillRgn :: HDC -> HRGN -> HBRUSH -> IO ()
 fillRgn dc rgn brush =
   withForeignPtr rgn $ \ p_rgn ->
   failIfFalse_ "FillRgn" $ c_FillRgn dc p_rgn brush
 foreign import WINDOWS_CCONV unsafe "windows.h FillRgn"
-  c_FillRgn :: HDC -> PRGN -> HBRUSH -> IO Bool
+  c_FillRgn :: HDC -> PRGN -> HBRUSH -> IO BOOL
 
 invertRgn :: HDC -> HRGN -> IO ()
 invertRgn dc rgn =
   withForeignPtr rgn $ \ p_rgn ->
   failIfFalse_ "InvertRgn" $ c_InvertRgn dc p_rgn
 foreign import WINDOWS_CCONV unsafe "windows.h InvertRgn"
-  c_InvertRgn :: HDC -> PRGN -> IO Bool
+  c_InvertRgn :: HDC -> PRGN -> IO BOOL
 
 paintRgn :: HDC -> HRGN -> IO ()
 paintRgn dc rgn =
   withForeignPtr rgn $ \ p_rgn ->
   failIfFalse_ "PaintRgn" $ c_PaintRgn dc p_rgn
 foreign import WINDOWS_CCONV unsafe "windows.h PaintRgn"
-  c_PaintRgn :: HDC -> PRGN -> IO Bool
+  c_PaintRgn :: HDC -> PRGN -> IO BOOL
 
-frameRgn :: HDC -> HRGN -> HBRUSH -> Int -> Int -> IO ()
+frameRgn :: HDC -> HRGN -> HBRUSH -> CInt -> CInt -> IO ()
 frameRgn dc rgn brush w h =
   withForeignPtr rgn $ \ p_rgn ->
   failIfFalse_ "FrameRgn" $ c_FrameRgn dc p_rgn brush w h
 foreign import WINDOWS_CCONV unsafe "windows.h FrameRgn"
-  c_FrameRgn :: HDC -> PRGN -> HBRUSH -> Int -> Int -> IO Bool
+  c_FrameRgn :: HDC -> PRGN -> HBRUSH -> CInt -> CInt -> IO BOOL
 
-ptInRegion :: HRGN -> Int -> Int -> IO Bool
+ptInRegion :: HRGN -> CInt -> CInt -> IO Bool
 ptInRegion rgn x y =
   withForeignPtr rgn $ \ p_rgn ->
   c_PtInRegion p_rgn x y
 foreign import WINDOWS_CCONV unsafe "windows.h PtInRegion"
-  c_PtInRegion :: PRGN -> Int -> Int -> IO Bool
+  c_PtInRegion :: PRGN -> CInt -> CInt -> IO BOOL
 
 rectInRegion :: HRGN -> RECT -> IO Bool
 rectInRegion rgn rect =
   withForeignPtr rgn $ \ p_rgn ->
   withRECT rect $ c_RectInRegion p_rgn
 foreign import WINDOWS_CCONV unsafe "windows.h RectInRegion"
-  c_RectInRegion :: PRGN -> Ptr RECT -> IO Bool
+  c_RectInRegion :: PRGN -> Ptr RECT -> IO BOOL
 
 ----------------------------------------------------------------
 -- End
