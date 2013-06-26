@@ -265,13 +265,13 @@ getDlgItemText dlg item size =
 foreign import WINDOWS_CCONV "windows.h GetDlgItemTextW"
   c_GetDlgItemText :: HWND -> Int -> LPTSTR -> Int -> IO Int
 
-getNextDlgGroupItem :: HWND -> HWND -> BOOL -> IO HWND
+getNextDlgGroupItem :: HWND -> HWND -> Bool -> IO HWND
 getNextDlgGroupItem dlg ctl previous =
   failIfNull "GetNextDlgGroupItem" $ c_GetNextDlgGroupItem dlg ctl previous
 foreign import WINDOWS_CCONV unsafe "windows.h GetNextDlgGroupItem"
   c_GetNextDlgGroupItem :: HWND -> HWND -> BOOL -> IO HWND
 
-getNextDlgTabItem :: HWND -> HWND -> BOOL -> IO HWND
+getNextDlgTabItem :: HWND -> HWND -> Bool -> IO HWND
 getNextDlgTabItem dlg ctl previous =
   failIfNull "GetNextDlgTabItem" $ c_GetNextDlgTabItem dlg ctl previous
 foreign import WINDOWS_CCONV unsafe "windows.h GetNextDlgTabItem"
