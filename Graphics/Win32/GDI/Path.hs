@@ -35,31 +35,31 @@ beginPath :: HDC -> IO ()
 beginPath dc =
   failIfFalse_ "BeginPath" $ c_BeginPath dc
 foreign import WINDOWS_CCONV unsafe "windows.h BeginPath"
-  c_BeginPath :: HDC -> IO Bool
+  c_BeginPath :: HDC -> IO BOOL
 
 closeFigure :: HDC -> IO ()
 closeFigure dc =
   failIfFalse_ "CloseFigure" $ c_CloseFigure dc
 foreign import WINDOWS_CCONV unsafe "windows.h CloseFigure"
-  c_CloseFigure :: HDC -> IO Bool
+  c_CloseFigure :: HDC -> IO BOOL
 
 endPath :: HDC -> IO ()
 endPath dc =
   failIfFalse_ "EndPath" $ c_EndPath dc
 foreign import WINDOWS_CCONV unsafe "windows.h EndPath"
-  c_EndPath :: HDC -> IO Bool
+  c_EndPath :: HDC -> IO BOOL
 
 fillPath :: HDC -> IO ()
 fillPath dc =
   failIfFalse_ "FillPath" $ c_FillPath dc
 foreign import WINDOWS_CCONV unsafe "windows.h FillPath"
-  c_FillPath :: HDC -> IO Bool
+  c_FillPath :: HDC -> IO BOOL
 
 flattenPath :: HDC -> IO ()
 flattenPath dc =
   failIfFalse_ "FlattenPath" $ c_FlattenPath dc
 foreign import WINDOWS_CCONV unsafe "windows.h FlattenPath"
-  c_FlattenPath :: HDC -> IO Bool
+  c_FlattenPath :: HDC -> IO BOOL
 
 pathToRegion :: HDC -> IO HRGN
 pathToRegion dc = do
