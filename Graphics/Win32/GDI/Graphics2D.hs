@@ -29,19 +29,19 @@ import Foreign
 -- Lines and Curves
 ----------------------------------------------------------------
 
-moveToEx :: HDC -> Int32 -> Int32 -> IO POINT
+moveToEx :: HDC -> CInt -> CInt -> IO POINT
 moveToEx dc x y =
   allocaPOINT $ \ p_point -> do
   failIfFalse_ "MoveToEx" $ c_MoveToEx dc x y p_point
   peekPOINT p_point
 foreign import WINDOWS_CCONV unsafe "windows.h MoveToEx"
-  c_MoveToEx :: HDC -> Int32 -> Int32 -> Ptr POINT -> IO Bool
+  c_MoveToEx :: HDC -> CInt -> CInt -> LPPOINT -> IO BOOL
 
-lineTo :: HDC -> Int32 -> Int32 -> IO ()
+lineTo :: HDC -> CInt -> CInt -> IO ()
 lineTo dc x y =
   failIfFalse_ "LineTo" $ c_LineTo dc x y
 foreign import WINDOWS_CCONV unsafe "windows.h LineTo"
-  c_LineTo :: HDC -> Int32 -> Int32 -> IO Bool
+  c_LineTo :: HDC -> CInt -> CInt -> IO BOOL
 
 polyline :: HDC -> [POINT] -> IO ()
 polyline dc points =
