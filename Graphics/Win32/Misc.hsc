@@ -169,7 +169,7 @@ transformedEllipse :: HDC -> POINT -> POINT -> POINT -> IO ()
 transformedEllipse dc (x0,y0) (x1,y1) (x2,y2) =
   failIfFalse_ "transformedEllipse" $ c_transformedEllipse dc x0 y0 x1 y1 x2 y2
 foreign import ccall unsafe "ellipse.h transformedEllipse"
-  c_transformedEllipse :: HDC -> LONG -> LONG -> LONG -> LONG -> LONG -> LONG -> IO Bool
+  c_transformedEllipse :: HDC -> LONG -> LONG -> LONG -> LONG -> LONG -> LONG -> IO BOOL
 
 {-# CFILES cbits/ellipse.c #-}
 
@@ -183,20 +183,20 @@ getCursorPos =
   failIfFalse_ "GetCursorPos" $ c_GetCursorPos p_pt
   peekPOINT p_pt
 foreign import WINDOWS_CCONV unsafe "windows.h GetCursorPos"
-  c_GetCursorPos :: Ptr POINT -> IO Bool
+  c_GetCursorPos :: Ptr POINT -> IO BOOL
 
 setCursorPos :: POINT -> IO ()
 setCursorPos (x,y) =
   failIfFalse_ "setCursorPos" $ c_SetCursorPos x y
 foreign import WINDOWS_CCONV unsafe "windows.h SetCursorPos"
-  c_SetCursorPos :: LONG -> LONG -> IO Bool
+  c_SetCursorPos :: LONG -> LONG -> IO BOOL
 
 clipCursor :: RECT -> IO ()
 clipCursor rect =
   withRECT rect $ \ p_rect ->
   failIfFalse_ "ClipCursor" $ c_ClipCursor p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h ClipCursor"
-  c_ClipCursor :: Ptr RECT -> IO Bool
+  c_ClipCursor :: Ptr RECT -> IO BOOL
 
 getClipCursor :: IO RECT
 getClipCursor =
@@ -204,7 +204,7 @@ getClipCursor =
   failIfFalse_ "GetClipCursor" $ c_GetClipCursor p_rect
   peekRECT p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h GetClipCursor"
-  c_GetClipCursor :: Ptr RECT -> IO Bool
+  c_GetClipCursor :: Ptr RECT -> IO BOOL
 
 ----------------------------------------------------------------
 -- Exit/shutdown
@@ -224,7 +224,7 @@ exitWindowsEx :: ExitOption -> IO ()
 exitWindowsEx opt =
   failIfFalse_ "ExitWindowsEx" $ c_ExitWindowsEx opt 0
 foreign import WINDOWS_CCONV unsafe "windows.h ExitWindowsEx"
-  c_ExitWindowsEx :: ExitOption -> DWORD -> IO Bool
+  c_ExitWindowsEx :: ExitOption -> DWORD -> IO BOOL
 
 exitWindows :: IO ()
 exitWindows = exitWindowsEx 0
@@ -256,7 +256,7 @@ beep :: WORD -> MbDuration -> IO ()
 beep freq mb_dur =
   failIfFalse_ "Beep" $ c_Beep freq (maybeDuration mb_dur)
 foreign import WINDOWS_CCONV unsafe "windows.h Beep"
-  c_Beep :: WORD -> Duration -> IO Bool
+  c_Beep :: WORD -> Duration -> IO BOOL
 
 ----------------------------------------------------------------
 -- Timers
@@ -280,7 +280,7 @@ killTimer :: Maybe HWND -> TimerId -> IO ()
 killTimer mb_wnd timer =
   failIfFalse_ "KillTimer" $ c_KillTimer (maybePtr mb_wnd) timer
 foreign import WINDOWS_CCONV unsafe "windows.h KillTimer"
-  c_KillTimer :: HWND -> TimerId -> IO Bool
+  c_KillTimer :: HWND -> TimerId -> IO BOOL
 
 -- For documentation purposes:
 type MilliSeconds = DWORD
