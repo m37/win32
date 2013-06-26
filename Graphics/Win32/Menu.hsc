@@ -395,7 +395,7 @@ setMenuItemBitmaps menu pos flags bm_unchecked bm_checked =
   failIfFalse_ "SetMenuItemBitmaps" $
     c_SetMenuItemBitmaps menu pos flags bm_unchecked bm_checked
 foreign import WINDOWS_CCONV unsafe "windows.h SetMenuItemBitmaps"
-  c_SetMenuItemBitmaps :: HMENU -> UINT -> UINT -> HBITMAP -> HBITMAP -> IO Bool
+  c_SetMenuItemBitmaps :: HMENU -> UINT -> UINT -> HBITMAP -> HBITMAP -> IO BOOL
 
 destroyMenu :: HMENU -> IO ()
 destroyMenu menu =
