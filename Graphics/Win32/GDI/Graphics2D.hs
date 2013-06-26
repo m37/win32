@@ -48,53 +48,53 @@ polyline dc points =
   withPOINTArray points $ \ pount_array npoints ->
   failIfFalse_ "Polyline" $ c_Polyline dc pount_array npoints
 foreign import WINDOWS_CCONV unsafe "windows.h Polyline"
-  c_Polyline :: HDC -> Ptr POINT -> Int -> IO Bool
+  c_Polyline :: HDC -> Ptr POINT -> CInt -> IO BOOL
 
 polylineTo :: HDC -> [POINT] -> IO ()
 polylineTo dc points =
   withPOINTArray points $ \ pount_array npoints ->
   failIfFalse_ "PolylineTo" $ c_PolylineTo dc pount_array npoints
 foreign import WINDOWS_CCONV unsafe "windows.h PolylineTo"
-  c_PolylineTo :: HDC -> Ptr POINT -> Int -> IO Bool
+  c_PolylineTo :: HDC -> Ptr POINT -> DWORD -> IO BOOL
 
 polygon :: HDC -> [POINT] -> IO ()
 polygon dc points =
   withPOINTArray points $ \ pount_array npoints ->
   failIfFalse_ "Polygon" $ c_Polygon dc pount_array npoints
 foreign import WINDOWS_CCONV unsafe "windows.h Polygon"
-  c_Polygon :: HDC -> Ptr POINT -> Int -> IO Bool
+  c_Polygon :: HDC -> Ptr POINT -> CInt -> IO BOOL
 
 polyBezier :: HDC -> [POINT] -> IO ()
 polyBezier dc points =
   withPOINTArray points $ \ pount_array npoints ->
   failIfFalse_ "PolyBezier" $ c_PolyBezier dc pount_array npoints
 foreign import WINDOWS_CCONV unsafe "windows.h PolyBezier"
-  c_PolyBezier :: HDC -> Ptr POINT -> Int -> IO Bool
+  c_PolyBezier :: HDC -> Ptr POINT -> DWORD -> IO BOOL
 
 polyBezierTo :: HDC -> [POINT] -> IO ()
 polyBezierTo dc points =
   withPOINTArray points $ \ pount_array npoints ->
   failIfFalse_ "PolyBezierTo" $ c_PolyBezierTo dc pount_array npoints
 foreign import WINDOWS_CCONV unsafe "windows.h PolyBezierTo"
-  c_PolyBezierTo :: HDC -> Ptr POINT -> Int -> IO Bool
+  c_PolyBezierTo :: HDC -> Ptr POINT -> DWORD -> IO BOOL
 
-arc :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+arc :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO ()
 arc dc left top right bottom x1 y1 x2 y2 =
   failIfFalse_ "Arc" $ c_Arc dc left top right bottom x1 y1 x2 y2
 foreign import WINDOWS_CCONV unsafe "windows.h Arc"
-  c_Arc :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_Arc :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
-arcTo :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+arcTo :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO ()
 arcTo dc left top right bottom x1 y1 x2 y2 =
   failIfFalse_ "ArcTo" $ c_ArcTo dc left top right bottom x1 y1 x2 y2
 foreign import WINDOWS_CCONV unsafe "windows.h ArcTo"
-  c_ArcTo :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_ArcTo :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
-angleArc :: HDC -> Int32 -> Int32 -> WORD -> Float -> Float -> IO ()
+angleArc :: HDC -> CInt -> CInt -> DWORD -> Float -> Float -> IO ()
 angleArc dc x y r start sweep =
   failIfFalse_ "AngleArc" $ c_AngleArc dc x y r start sweep
 foreign import WINDOWS_CCONV unsafe "windows.h AngleArc"
-  c_AngleArc :: HDC -> Int32 -> Int32 -> WORD -> Float -> Float -> IO Bool
+  c_AngleArc :: HDC -> CInt -> CInt -> DWORD -> FLOAT -> FLOAT -> IO BOOL
 
 ----------------------------------------------------------------
 -- Filled Shapes
@@ -108,61 +108,61 @@ fillRect dc rect brush =
   withRECT rect $ \ c_rect ->
   failIfFalse_ "FillRect" $ c_FillRect dc c_rect brush
 foreign import WINDOWS_CCONV unsafe "windows.h FillRect"
-  c_FillRect :: HDC -> Ptr RECT -> HBRUSH -> IO Bool
+  c_FillRect :: HDC -> Ptr RECT -> HBRUSH -> IO BOOL
 
 frameRect :: HDC -> RECT -> HBRUSH -> IO ()
 frameRect dc rect brush =
   withRECT rect $ \ c_rect ->
   failIfFalse_ "FrameRect" $ c_FrameRect dc c_rect brush
 foreign import WINDOWS_CCONV unsafe "windows.h FrameRect"
-  c_FrameRect :: HDC -> Ptr RECT -> HBRUSH -> IO Bool
+  c_FrameRect :: HDC -> Ptr RECT -> HBRUSH -> IO BOOL
 
 invertRect :: HDC -> RECT -> IO ()
 invertRect dc rect =
   withRECT rect $ \ c_rect ->
   failIfFalse_ "InvertRect" $ c_InvertRect dc c_rect
 foreign import WINDOWS_CCONV unsafe "windows.h InvertRect"
-  c_InvertRect :: HDC -> Ptr RECT -> IO Bool
+  c_InvertRect :: HDC -> Ptr RECT -> IO BOOL
 
-rectangle :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+rectangle :: HDC -> CInt -> CInt -> CInt -> CInt -> IO ()
 rectangle dc left top right bottom =
   failIfFalse_ "Rectangle" $ c_Rectangle dc left top right bottom
 foreign import WINDOWS_CCONV unsafe "windows.h Rectangle"
-  c_Rectangle :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_Rectangle :: HDC -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
-roundRect :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+roundRect :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO ()
 roundRect dc left top right bottom w h =
   failIfFalse_ "RoundRect" $ c_RoundRect dc left top right bottom w h
 foreign import WINDOWS_CCONV unsafe "windows.h RoundRect"
-  c_RoundRect :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_RoundRect :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
-ellipse :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+ellipse :: HDC -> CInt -> CInt -> CInt -> CInt -> IO ()
 ellipse dc left top right bottom =
   failIfFalse_ "Ellipse" $ c_Ellipse dc left top right bottom
 foreign import WINDOWS_CCONV unsafe "windows.h Ellipse"
-  c_Ellipse :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_Ellipse :: HDC -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
-chord :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+chord :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO ()
 chord dc left top right bottom x1 y1 x2 y2 =
   failIfFalse_ "Chord" $ c_Chord dc left top right bottom x1 y1 x2 y2
 foreign import WINDOWS_CCONV unsafe "windows.h Chord"
-  c_Chord :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_Chord :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
-pie :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO ()
+pie :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO ()
 pie dc left top right bottom x1 y1 x2 y2 =
   failIfFalse_ "Pie" $ c_Pie dc left top right bottom x1 y1 x2 y2
 foreign import WINDOWS_CCONV unsafe "windows.h Pie"
-  c_Pie :: HDC -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> Int32 -> IO Bool
+  c_Pie :: HDC -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO BOOL
 
 ----------------------------------------------------------------
 -- Bitmaps
 ----------------------------------------------------------------
 
-bitBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> RasterOp3 -> IO ()
+bitBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> RasterOp3 -> IO ()
 bitBlt dcDest xDest yDest w h dcSrc xSrc ySrc rop =
   failIfFalse_ "BitBlt" $ c_BitBlt dcDest xDest yDest w h dcSrc xSrc ySrc rop
 foreign import WINDOWS_CCONV unsafe "windows.h BitBlt"
-  c_BitBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> RasterOp3 -> IO Bool
+  c_BitBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> RasterOp3 -> IO Bool
 
 maskBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> HBITMAP -> INT -> INT -> RasterOp4 -> IO ()
 maskBlt dcDest xDest yDest w h dcSrc xSrc ySrc bm xMask yMask rop =
