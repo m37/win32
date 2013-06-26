@@ -285,7 +285,7 @@ regNotifyChangeKeyValue key watch notifyFilter event async =
   failUnlessSuccess "RegNotifyChangeKeyValue" $
     c_RegNotifyChangeKeyValue p_key watch notifyFilter event async
 foreign import WINDOWS_CCONV unsafe "windows.h RegNotifyChangeKeyValue"
-  c_RegNotifyChangeKeyValue :: PKEY -> Bool -> RegNotifyOptions -> HANDLE -> Bool -> IO ErrCode
+  c_RegNotifyChangeKeyValue :: PKEY -> BOOL -> RegNotifyOptions -> HANDLE -> BOOL -> IO ErrCode
 
 -- endif
 
