@@ -72,19 +72,19 @@ strokeAndFillPath :: HDC -> IO ()
 strokeAndFillPath dc =
   failIfFalse_ "StrokeAndFillPath" $ c_StrokeAndFillPath dc
 foreign import WINDOWS_CCONV unsafe "windows.h StrokeAndFillPath"
-  c_StrokeAndFillPath :: HDC -> IO Bool
+  c_StrokeAndFillPath :: HDC -> IO BOOL
 
 strokePath :: HDC -> IO ()
 strokePath dc =
   failIfFalse_ "StrokePath" $ c_StrokePath dc
 foreign import WINDOWS_CCONV unsafe "windows.h StrokePath"
-  c_StrokePath :: HDC -> IO Bool
+  c_StrokePath :: HDC -> IO BOOL
 
 widenPath :: HDC -> IO ()
 widenPath dc =
   failIfFalse_ "WidenPath" $ c_WidenPath dc
 foreign import WINDOWS_CCONV unsafe "windows.h WidenPath"
-  c_WidenPath :: HDC -> IO Bool
+  c_WidenPath :: HDC -> IO BOOL
 
 ----------------------------------------------------------------
 -- End
