@@ -112,13 +112,13 @@ getBkMode dc =
 foreign import WINDOWS_CCONV unsafe "windows.h GetBkMode"
   c_GetBkMode :: HDC -> IO  BackgroundMode
 
-setBrushOrgEx :: HDC -> Int -> Int -> IO POINT
+setBrushOrgEx :: HDC -> CInt -> CInt -> IO POINT
 setBrushOrgEx dc x y =
   allocaPOINT $ \ pt -> do
   failIfFalse_ "SetBrushOrgEx" $ c_SetBrushOrgEx dc x y pt
   peekPOINT pt
 foreign import WINDOWS_CCONV unsafe "windows.h SetBrushOrgEx"
-  c_SetBrushOrgEx :: HDC -> Int -> Int -> Ptr POINT -> IO Bool
+  c_SetBrushOrgEx :: HDC -> CInt -> CInt -> LPPOINT -> IO BOOL
 
 getBrushOrgEx :: HDC -> IO POINT
 getBrushOrgEx dc =
@@ -126,7 +126,7 @@ getBrushOrgEx dc =
   failIfFalse_ "GetBrushOrgEx" $ c_GetBrushOrgEx dc pt
   peekPOINT pt
 foreign import WINDOWS_CCONV unsafe "windows.h GetBrushOrgEx"
-  c_GetBrushOrgEx :: HDC -> Ptr POINT -> IO Bool
+  c_GetBrushOrgEx :: HDC -> LPPOINT -> IO BOOL
 
 setTextAlign :: HDC -> TextAlignment -> IO TextAlignment
 setTextAlign dc align =
@@ -159,7 +159,7 @@ getMiterLimit dc =
   failIfFalse_ "GetMiterLimit" $ c_GetMiterLimit dc p_res
   peek p_res
 foreign import WINDOWS_CCONV unsafe "windows.h GetMiterLimit"
-  c_GetMiterLimit :: HDC -> Ptr FLOAT -> IO Bool
+  c_GetMiterLimit :: HDC -> PFLOAT -> IO BOOL
 
 setMiterLimit :: HDC -> Float -> IO Float
 setMiterLimit dc new_limit =
@@ -167,21 +167,21 @@ setMiterLimit dc new_limit =
   failIfFalse_ "SetMiterLimit" $ c_SetMiterLimit dc new_limit p_old_limit
   peek p_old_limit
 foreign import WINDOWS_CCONV unsafe "windows.h SetMiterLimit"
-  c_SetMiterLimit :: HDC -> FLOAT -> Ptr FLOAT -> IO Bool
+  c_SetMiterLimit :: HDC -> FLOAT -> PFLOAT -> IO BOOL
 
 ----------------------------------------------------------------
 
-saveDC :: HDC -> IO Int
+saveDC :: HDC -> IO CInt
 saveDC dc =
   failIfZero "SaveDC" $ c_SaveDC dc
 foreign import WINDOWS_CCONV unsafe "windows.h SaveDC"
-  c_SaveDC :: HDC -> IO Int
+  c_SaveDC :: HDC -> IO CInt
 
-restoreDC :: HDC -> Int -> IO ()
+restoreDC :: HDC -> CInt -> IO ()
 restoreDC dc saved =
   failIfFalse_ "RestoreDC" $ c_RestoreDC dc saved
 foreign import WINDOWS_CCONV unsafe "windows.h RestoreDC"
-  c_RestoreDC :: HDC -> Int -> IO Bool
+  c_RestoreDC :: HDC -> CInt -> IO BOOL
 
 ----------------------------------------------------------------
 
@@ -247,7 +247,7 @@ selectPalette :: HDC -> HPALETTE -> Bool -> IO HPALETTE
 selectPalette dc palette force_bg =
   failIfNull "SelectPalette" $ c_SelectPalette dc palette force_bg
 foreign import WINDOWS_CCONV unsafe "windows.h SelectPalette"
-  c_SelectPalette :: HDC -> HPALETTE -> Bool -> IO HPALETTE
+  c_SelectPalette :: HDC -> HPALETTE -> BOOL -> IO HPALETTE
 
 selectRgn :: HDC -> HRGN -> IO RegionType
 selectRgn dc rgn =
@@ -286,7 +286,7 @@ cancelDC :: HDC -> IO ()
 cancelDC dc =
   failIfFalse_ "CancelDC" $ c_CancelDC dc
 foreign import WINDOWS_CCONV unsafe "windows.h CancelDC"
-  c_CancelDC :: HDC -> IO Bool
+  c_CancelDC :: HDC -> IO BOOL
 
 createCompatibleDC :: Maybe HDC -> IO HDC
 createCompatibleDC mb_dc =
@@ -298,7 +298,7 @@ deleteDC :: HDC -> IO ()
 deleteDC dc =
   failIfFalse_ "DeleteDC" $ c_DeleteDC dc
 foreign import WINDOWS_CCONV unsafe "windows.h DeleteDC"
-  c_DeleteDC :: HDC -> IO Bool
+  c_DeleteDC :: HDC -> IO BOOL
 
 ----------------------------------------------------------------
 -- End
