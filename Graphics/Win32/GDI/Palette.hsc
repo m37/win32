@@ -43,7 +43,7 @@ deletePalette :: HPALETTE -> IO ()
 deletePalette p =
   failIfFalse_ "DeletePalette" $ c_DeletePalette p
 foreign import WINDOWS_CCONV unsafe "windows.h DeleteObject"
-  c_DeletePalette :: HPALETTE -> IO Bool
+  c_DeletePalette :: HPALETTE -> IO BOOL
 
 ----------------------------------------------------------------
 -- End
