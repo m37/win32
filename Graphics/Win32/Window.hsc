@@ -242,7 +242,7 @@ getClientRect wnd =
   failIfFalse_ "GetClientRect" $ c_GetClientRect wnd p_rect
   peekRECT p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h GetClientRect"
-  c_GetClientRect :: HWND -> Ptr RECT -> IO Bool
+  c_GetClientRect :: HWND -> Ptr RECT -> IO BOOL
 
 getWindowRect :: HWND -> IO RECT
 getWindowRect wnd =
@@ -250,7 +250,7 @@ getWindowRect wnd =
   failIfFalse_ "GetWindowRect" $ c_GetWindowRect wnd p_rect
   peekRECT p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h GetWindowRect"
-  c_GetWindowRect :: HWND -> Ptr RECT -> IO Bool
+  c_GetWindowRect :: HWND -> Ptr RECT -> IO BOOL
 
 -- Should it be Maybe RECT instead?
 
@@ -259,7 +259,7 @@ invalidateRect wnd p_mb_rect erase =
   failIfFalse_ "InvalidateRect" $
     c_InvalidateRect (maybePtr wnd) (maybePtr p_mb_rect) erase
 foreign import WINDOWS_CCONV "windows.h InvalidateRect"
-  c_InvalidateRect :: HWND -> LPRECT -> Bool -> IO Bool
+  c_InvalidateRect :: HWND -> LPRECT -> BOOL -> IO BOOL
 
 screenToClient :: HWND -> POINT -> IO POINT
 screenToClient wnd pt =
@@ -267,7 +267,7 @@ screenToClient wnd pt =
   failIfFalse_ "ScreenToClient" $ c_ScreenToClient wnd p_pt
   peekPOINT p_pt
 foreign import WINDOWS_CCONV unsafe "windows.h ScreenToClient"
-  c_ScreenToClient :: HWND -> Ptr POINT -> IO Bool
+  c_ScreenToClient :: HWND -> Ptr POINT -> IO BOOL
 
 clientToScreen :: HWND -> POINT -> IO POINT
 clientToScreen wnd pt =
@@ -275,7 +275,7 @@ clientToScreen wnd pt =
   failIfFalse_ "ClientToScreen" $ c_ClientToScreen wnd p_pt
   peekPOINT p_pt
 foreign import WINDOWS_CCONV unsafe "windows.h ClientToScreen"
-  c_ClientToScreen :: HWND -> Ptr POINT -> IO Bool
+  c_ClientToScreen :: HWND -> Ptr POINT -> IO BOOL
 
 ----------------------------------------------------------------
 -- Setting window text/label
@@ -287,7 +287,7 @@ setWindowText wnd text =
   withTString text $ \ c_text ->
   failIfFalse_ "SetWindowText" $ c_SetWindowText wnd c_text
 foreign import WINDOWS_CCONV "windows.h SetWindowTextW"
-  c_SetWindowText :: HWND -> LPCTSTR -> IO Bool
+  c_SetWindowText :: HWND -> LPCTSTR -> IO BOOL
 
 ----------------------------------------------------------------
 -- Paint struct
@@ -338,7 +338,7 @@ type ShowWindowControl   = DWORD
  }
 
 foreign import WINDOWS_CCONV "windows.h ShowWindow"
-  showWindow :: HWND  -> ShowWindowControl  -> IO Bool
+  showWindow :: HWND  -> ShowWindowControl  -> IO BOOL
 
 ----------------------------------------------------------------
 -- Misc
@@ -350,7 +350,7 @@ adjustWindowRect rect style menu =
   failIfFalse_ "AdjustWindowRect" $ c_AdjustWindowRect p_rect style menu
   peekRECT p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h AdjustWindowRect"
-  c_AdjustWindowRect :: Ptr RECT -> WindowStyle -> Bool -> IO Bool
+  c_AdjustWindowRect :: Ptr RECT -> WindowStyle -> BOOL -> IO BOOL
 
 adjustWindowRectEx :: RECT -> WindowStyle -> Bool -> WindowStyleEx -> IO RECT
 adjustWindowRectEx rect style menu exstyle =
@@ -359,7 +359,7 @@ adjustWindowRectEx rect style menu exstyle =
     c_AdjustWindowRectEx p_rect style menu exstyle
   peekRECT p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h AdjustWindowRectEx"
-  c_AdjustWindowRectEx :: Ptr RECT -> WindowStyle -> Bool -> WindowStyleEx -> IO Bool
+  c_AdjustWindowRectEx :: Ptr RECT -> WindowStyle -> BOOL -> WindowStyleEx -> IO BOOL
 
 -- Win2K and later:
 -- %fun AllowSetForegroundWindow :: DWORD -> IO ()
@@ -386,13 +386,13 @@ foreign import WINDOWS_CCONV unsafe "windows.h AdjustWindowRectEx"
 -- %fail { !success } { ErrorWin("AnimateWindow") }
 
 foreign import WINDOWS_CCONV unsafe "windows.h AnyPopup"
-  anyPopup :: IO Bool
+  anyPopup :: IO BOOL
 
-arrangeIconicWindows :: HWND -> IO ()
+arrangeIconicWindows :: HWND -> IO UINT
 arrangeIconicWindows wnd =
-  failIfFalse_ "ArrangeIconicWindows" $ c_ArrangeIconicWindows wnd
+  failIfZero "ArrangeIconicWindows" $ c_ArrangeIconicWindows wnd
 foreign import WINDOWS_CCONV unsafe "windows.h ArrangeIconicWindows"
-  c_ArrangeIconicWindows :: HWND -> IO Bool
+  c_ArrangeIconicWindows :: HWND -> IO UINT
 
 beginDeferWindowPos :: Int -> IO HDWP
 beginDeferWindowPos n =
@@ -404,7 +404,7 @@ bringWindowToTop :: HWND -> IO ()
 bringWindowToTop wnd =
   failIfFalse_ "BringWindowToTop" $ c_BringWindowToTop wnd
 foreign import WINDOWS_CCONV "windows.h BringWindowToTop"
-  c_BringWindowToTop :: HWND -> IO Bool
+  c_BringWindowToTop :: HWND -> IO BOOL
 
 -- Can't pass structs with current FFI, so use a C wrapper (in Types)
 childWindowFromPoint :: HWND -> POINT -> IO (Maybe HWND)
@@ -432,13 +432,13 @@ destroyWindow :: HWND -> IO ()
 destroyWindow wnd =
   failIfFalse_ "DestroyWindow" $ c_DestroyWindow wnd
 foreign import WINDOWS_CCONV "windows.h DestroyWindow"
-  c_DestroyWindow :: HWND -> IO Bool
+  c_DestroyWindow :: HWND -> IO BOOL
 
 endDeferWindowPos :: HDWP -> IO ()
 endDeferWindowPos pos =
   failIfFalse_ "EndDeferWindowPos" $ c_EndDeferWindowPos pos
 foreign import WINDOWS_CCONV unsafe "windows.h EndDeferWindowPos"
-  c_EndDeferWindowPos :: HDWP -> IO Bool
+  c_EndDeferWindowPos :: HDWP -> IO BOOL
 
 findWindow :: String -> String -> IO (Maybe HWND)
 findWindow cname wname =
@@ -457,14 +457,14 @@ foreign import WINDOWS_CCONV unsafe "windows.h FindWindowExW"
   c_FindWindowEx :: HWND -> HWND -> LPCTSTR -> LPCTSTR -> IO HWND
 
 foreign import WINDOWS_CCONV unsafe "windows.h FlashWindow"
-  flashWindow :: HWND -> Bool -> IO Bool
+  flashWindow :: HWND -> BOOL -> IO BOOL
 -- No error code
 
 moveWindow :: HWND -> Int -> Int -> Int -> Int -> Bool -> IO ()
 moveWindow wnd x y w h repaint =
   failIfFalse_ "MoveWindow" $ c_MoveWindow wnd x y w h repaint
 foreign import WINDOWS_CCONV "windows.h MoveWindow"
-  c_MoveWindow :: HWND -> Int -> Int -> Int -> Int -> Bool -> IO Bool
+  c_MoveWindow :: HWND -> Int -> Int -> Int -> Int -> BOOL -> IO BOOL
 
 foreign import WINDOWS_CCONV unsafe "windows.h GetDesktopWindow"
   getDesktopWindow :: IO HWND
@@ -543,9 +543,9 @@ foreign import WINDOWS_CCONV unsafe "windows.h GetWindowDC"
 
 releaseDC :: Maybe HWND -> HDC -> IO ()
 releaseDC mb_wnd dc =
-  failIfFalse_ "ReleaseDC" $ c_ReleaseDC (maybePtr mb_wnd) dc
+  failIf_ (== 0) "ReleaseDC" $ c_ReleaseDC (maybePtr mb_wnd) dc
 foreign import WINDOWS_CCONV unsafe "windows.h ReleaseDC"
-  c_ReleaseDC :: HWND -> HDC -> IO Bool
+  c_ReleaseDC :: HWND -> HDC -> IO CInt
 
 getDCOrgEx :: HDC -> IO POINT
 getDCOrgEx dc =
@@ -553,7 +553,7 @@ getDCOrgEx dc =
   failIfFalse_ "GetDCOrgEx" $ c_GetDCOrgEx dc p_pt
   peekPOINT p_pt
 foreign import WINDOWS_CCONV unsafe "windows.h GetDCOrgEx"
-  c_GetDCOrgEx :: HDC -> Ptr POINT -> IO Bool
+  c_GetDCOrgEx :: HDC -> Ptr POINT -> IO BOOL
 
 ----------------------------------------------------------------
 -- Caret
@@ -563,13 +563,13 @@ hideCaret :: HWND -> IO ()
 hideCaret wnd =
   failIfFalse_ "HideCaret" $ c_HideCaret wnd
 foreign import WINDOWS_CCONV unsafe "windows.h HideCaret"
-  c_HideCaret :: HWND -> IO Bool
+  c_HideCaret :: HWND -> IO BOOL
 
 showCaret :: HWND -> IO ()
 showCaret wnd =
   failIfFalse_ "ShowCaret" $ c_ShowCaret wnd
 foreign import WINDOWS_CCONV unsafe "windows.h ShowCaret"
-  c_ShowCaret :: HWND -> IO Bool
+  c_ShowCaret :: HWND -> IO BOOL
 
 -- ToDo: allow arg2 to be NULL or {(HBITMAP)1}
 
@@ -578,13 +578,13 @@ createCaret wnd bm mb_w mb_h =
   failIfFalse_ "CreateCaret" $
     c_CreateCaret wnd bm (maybeNum mb_w) (maybeNum mb_h)
 foreign import WINDOWS_CCONV unsafe "windows.h CreateCaret"
-  c_CreateCaret :: HWND -> HBITMAP -> INT -> INT -> IO Bool
+  c_CreateCaret :: HWND -> HBITMAP -> INT -> INT -> IO BOOL
 
 destroyCaret :: IO ()
 destroyCaret =
   failIfFalse_ "DestroyCaret" $ c_DestroyCaret
 foreign import WINDOWS_CCONV unsafe "windows.h DestroyCaret"
-  c_DestroyCaret :: IO Bool
+  c_DestroyCaret :: IO BOOL
 
 getCaretPos :: IO POINT
 getCaretPos =
@@ -592,13 +592,13 @@ getCaretPos =
   failIfFalse_ "GetCaretPos" $ c_GetCaretPos p_pt
   peekPOINT p_pt
 foreign import WINDOWS_CCONV unsafe "windows.h GetCaretPos"
-  c_GetCaretPos :: Ptr POINT -> IO Bool
+  c_GetCaretPos :: Ptr POINT -> IO BOOL
 
 setCaretPos :: POINT -> IO ()
 setCaretPos (x,y) =
   failIfFalse_ "SetCaretPos" $ c_SetCaretPos x y
 foreign import WINDOWS_CCONV unsafe "windows.h SetCaretPos"
-  c_SetCaretPos :: LONG -> LONG -> IO Bool
+  c_SetCaretPos :: LONG -> LONG -> IO BOOL
 
 -- The remarks on SetCaretBlinkTime are either highly risible or very sad -
 -- depending on whether you plan to use this function.
@@ -670,7 +670,7 @@ updateWindow :: HWND -> IO ()
 updateWindow wnd =
   failIfFalse_ "UpdateWindow" $ c_UpdateWindow wnd
 foreign import WINDOWS_CCONV "windows.h UpdateWindow"
-  c_UpdateWindow :: HWND -> IO Bool
+  c_UpdateWindow :: HWND -> IO BOOL
 
 -- Return value of DispatchMessage is usually ignored
 
