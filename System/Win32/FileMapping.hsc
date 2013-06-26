@@ -135,7 +135,7 @@ createFileMapping mh flags mosize name =
         (moshi,moslow) = ddwordToDwords mosize
         handle = maybe iNVALID_HANDLE_VALUE id mh
 
-openFileMapping :: FileMapAccess -> BOOL -> Maybe String -> IO HANDLE
+openFileMapping :: FileMapAccess -> Bool -> Maybe String -> IO HANDLE
 openFileMapping access inherit name =
     maybeWith withTString name $ \name ->
         failIf (==nullPtr) "openFileMapping: OpenFileMapping" $
