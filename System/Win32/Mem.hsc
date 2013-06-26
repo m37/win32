@@ -122,7 +122,7 @@ globalUnlock :: HGLOBAL -> IO ()
 globalUnlock mem =
   failIfFalse_ "GlobalUnlock" $ c_GlobalUnlock mem
 foreign import WINDOWS_CCONV unsafe "windows.h GlobalUnlock"
-  c_GlobalUnlock :: HGLOBAL -> IO Bool
+  c_GlobalUnlock :: HGLOBAL -> IO BOOL
 
 type HeapAllocFlags = DWORD
 
@@ -154,19 +154,19 @@ heapDestroy :: HANDLE -> IO ()
 heapDestroy heap =
   failIfFalse_ "HeapDestroy" $ c_HeapDestroy heap
 foreign import WINDOWS_CCONV unsafe "windows.h HeapDestroy"
-  c_HeapDestroy :: HANDLE -> IO Bool
+  c_HeapDestroy :: HANDLE -> IO BOOL
 
 heapFree :: HANDLE -> HeapAllocFlags -> Addr -> IO ()
 heapFree heap flags addr =
   failIfFalse_ "HeapFree" $ c_HeapFree heap flags addr
 foreign import WINDOWS_CCONV unsafe "windows.h HeapFree"
-  c_HeapFree :: HANDLE -> HeapAllocFlags -> Addr -> IO Bool
+  c_HeapFree :: HANDLE -> HeapAllocFlags -> Addr -> IO BOOL
 
 heapLock :: HANDLE -> IO ()
 heapLock heap =
   failIfFalse_ "HeapLock" $ c_HeapLock heap
 foreign import WINDOWS_CCONV unsafe "windows.h HeapLock"
-  c_HeapLock :: HANDLE -> IO Bool
+  c_HeapLock :: HANDLE -> IO BOOL
 
 heapReAlloc :: HANDLE -> HeapAllocFlags -> Addr -> DWORD -> IO Addr
 heapReAlloc heap flags addr size =
@@ -184,10 +184,10 @@ heapUnlock :: HANDLE -> IO ()
 heapUnlock heap =
   failIfFalse_ "HeapUnlock" $ c_HeapUnlock heap
 foreign import WINDOWS_CCONV unsafe "windows.h HeapUnlock"
-  c_HeapUnlock :: HANDLE -> IO Bool
+  c_HeapUnlock :: HANDLE -> IO BOOL
 
 foreign import WINDOWS_CCONV unsafe "windows.h HeapValidate"
-  heapValidate :: HANDLE -> HeapAllocFlags -> Addr -> IO Bool
+  heapValidate :: HANDLE -> HeapAllocFlags -> Addr -> IO BOOL
 
 type VirtualAllocFlags = DWORD
 
@@ -233,7 +233,7 @@ virtualFree :: Addr -> DWORD -> FreeFlags -> IO ()
 virtualFree addr size flags =
   failIfFalse_ "VirtualFree" $ c_VirtualFree addr size flags
 foreign import WINDOWS_CCONV unsafe "windows.h VirtualFree"
-  c_VirtualFree :: Addr -> DWORD -> FreeFlags -> IO Bool
+  c_VirtualFree :: Addr -> DWORD -> FreeFlags -> IO BOOL
 
 -- %fun VirtualFreeEx :: HANDLE -> Addr -> DWORD -> FreeFlags -> IO ()
 -- %code extern BOOL WINAPI VirtualFreeEx(HANDLE,LPVOID,DWORD,DWORD);
@@ -244,7 +244,7 @@ virtualLock :: Addr -> DWORD -> IO ()
 virtualLock addr size =
   failIfFalse_ "VirtualLock" $ c_VirtualLock addr size
 foreign import WINDOWS_CCONV unsafe "windows.h VirtualLock"
-  c_VirtualLock :: Addr -> DWORD -> IO Bool
+  c_VirtualLock :: Addr -> DWORD -> IO BOOL
 
 virtualProtect :: Addr -> DWORD -> ProtectFlags -> IO ProtectFlags
 virtualProtect addr size new_prot =
@@ -252,7 +252,7 @@ virtualProtect addr size new_prot =
   failIfFalse_ "VirtualProtect" $ c_VirtualProtect addr size new_prot p_old
   peek p_old
 foreign import WINDOWS_CCONV unsafe "windows.h VirtualProtect"
-  c_VirtualProtect :: Addr -> DWORD -> DWORD -> Ptr DWORD -> IO Bool
+  c_VirtualProtect :: Addr -> DWORD -> DWORD -> Ptr DWORD -> IO BOOL
 
 virtualProtectEx :: HANDLE -> Addr -> DWORD -> ProtectFlags -> IO ProtectFlags
 virtualProtectEx proc addr size new_prot =
@@ -261,7 +261,7 @@ virtualProtectEx proc addr size new_prot =
     c_VirtualProtectEx proc addr size new_prot p_old
   peek p_old
 foreign import WINDOWS_CCONV unsafe "windows.h VirtualProtectEx"
-  c_VirtualProtectEx :: HANDLE -> Addr -> DWORD -> DWORD -> Ptr DWORD -> IO Bool
+  c_VirtualProtectEx :: HANDLE -> Addr -> DWORD -> DWORD -> Ptr DWORD -> IO BOOL
 
 -- No VirtualQuery..()
 
