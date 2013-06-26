@@ -58,7 +58,7 @@ type ClipboardFormat = UINT
 -- % , CF_UNICODETEXT  -- WinNT only
 
 foreign import WINDOWS_CCONV unsafe "windows.h ChangeClipboardChain"
-  changeClipboardChain :: HWND -> HWND -> IO Bool
+  changeClipboardChain :: HWND -> HWND -> IO BOOL
 
 closeClipboard :: IO ()
 closeClipboard =
