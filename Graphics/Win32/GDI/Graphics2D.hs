@@ -162,21 +162,21 @@ bitBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> RasterOp
 bitBlt dcDest xDest yDest w h dcSrc xSrc ySrc rop =
   failIfFalse_ "BitBlt" $ c_BitBlt dcDest xDest yDest w h dcSrc xSrc ySrc rop
 foreign import WINDOWS_CCONV unsafe "windows.h BitBlt"
-  c_BitBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> RasterOp3 -> IO Bool
+  c_BitBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> RasterOp3 -> IO BOOL
 
-maskBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> HBITMAP -> INT -> INT -> RasterOp4 -> IO ()
+maskBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> HBITMAP -> CInt -> CInt -> RasterOp4 -> IO ()
 maskBlt dcDest xDest yDest w h dcSrc xSrc ySrc bm xMask yMask rop =
   failIfFalse_ "MaskBlt" $
     c_MaskBlt dcDest xDest yDest w h dcSrc xSrc ySrc bm xMask yMask rop
 foreign import WINDOWS_CCONV unsafe "windows.h MaskBlt"
-  c_MaskBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> HBITMAP -> INT -> INT -> RasterOp4 -> IO Bool
+  c_MaskBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> HBITMAP -> CInt -> CInt -> RasterOp4 -> IO BOOL
 
-stretchBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> INT -> INT -> RasterOp3 -> IO ()
+stretchBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> CInt -> CInt -> RasterOp3 -> IO ()
 stretchBlt dcDest xDest yDest wDest hDest hdcSrc xSrc ySrc wSrc hSrc rop =
   failIfFalse_ "StretchBlt" $
     c_StretchBlt dcDest xDest yDest wDest hDest hdcSrc xSrc ySrc wSrc hSrc rop
 foreign import WINDOWS_CCONV unsafe "windows.h StretchBlt"
-  c_StretchBlt :: HDC -> INT -> INT -> INT -> INT -> HDC -> INT -> INT -> INT -> INT -> RasterOp3 -> IO Bool
+  c_StretchBlt :: HDC -> CInt -> CInt -> CInt -> CInt -> HDC -> CInt -> CInt -> CInt -> CInt -> RasterOp3 -> IO BOOL
 
 -- We deviate slightly from the Win32 interface
 
@@ -185,24 +185,24 @@ foreign import WINDOWS_CCONV unsafe "windows.h StretchBlt"
 -- Old 2nd line:
 -- %start POINT vertices[3];
 
-plgBlt :: HDC -> POINT -> POINT -> POINT -> HDC -> INT -> INT -> INT -> INT -> MbHBITMAP -> INT -> INT -> IO ()
+plgBlt :: HDC -> POINT -> POINT -> POINT -> HDC -> CInt -> CInt -> CInt -> CInt -> MbHBITMAP -> CInt -> CInt -> IO ()
 plgBlt hdDest p1 p2 p3 hdSrc x y w h mb_bm xMask yMask =
   withPOINTArray [p1,p2,p3] $ \ vertices _ ->
   failIfFalse_ "PlgBlt" $
     c_PlgBlt hdDest vertices hdSrc x y w h (maybePtr mb_bm) xMask yMask
 foreign import WINDOWS_CCONV unsafe "windows.h PlgBlt"
-  c_PlgBlt :: HDC -> Ptr POINT -> HDC -> INT -> INT -> INT -> INT -> HBITMAP -> INT -> INT -> IO Bool
+  c_PlgBlt :: HDC -> Ptr POINT -> HDC -> CInt -> CInt -> CInt -> CInt -> HBITMAP -> CInt -> CInt -> IO BOOL
 
 ----------------------------------------------------------------
 -- Fonts and Text
 ----------------------------------------------------------------
 
-textOut :: HDC -> INT -> INT -> String -> IO ()
+textOut :: HDC -> CInt -> CInt -> String -> IO ()
 textOut dc x y str =
   withTStringLen str $ \ (c_str, len) ->
   failIfFalse_ "TextOut" $ c_TextOut dc x y c_str len
 foreign import WINDOWS_CCONV unsafe "windows.h TextOutW"
-  c_TextOut :: HDC -> INT -> INT -> LPCTSTR -> Int -> IO Bool
+  c_TextOut :: HDC -> CInt -> CInt -> LPCTSTR -> CInt -> IO BOOL
 
 -- missing TabbedTextOut from WinFonts.ss; GSL ???
 
@@ -214,7 +214,7 @@ getTextExtentPoint32 dc str =
     c_GetTextExtentPoint32 dc c_str len p_size
   peekSIZE p_size
 foreign import WINDOWS_CCONV unsafe "windows.h GetTextExtentPoint32W"
-  c_GetTextExtentPoint32 :: HDC -> LPCTSTR -> Int -> Ptr SIZE -> IO Bool
+  c_GetTextExtentPoint32 :: HDC -> LPCTSTR -> CInt -> LPSIZE -> IO BOOL
 
 -- missing getTabbedTextExtent from WinFonts.ss; GSL ???
 -- missing SetTextJustification from WinFonts.ss; GSL ???
