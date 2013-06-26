@@ -36,13 +36,13 @@ drawIcon :: HDC -> Int -> Int -> HICON -> IO ()
 drawIcon dc x y icon =
   failIfFalse_ "DrawIcon" $ c_DrawIcon dc x y icon
 foreign import WINDOWS_CCONV unsafe "windows.h DrawIcon"
-  c_DrawIcon :: HDC -> Int -> Int -> HICON -> IO Bool
+  c_DrawIcon :: HDC -> Int -> Int -> HICON -> IO BOOL
 
 destroyIcon :: HICON -> IO ()
 destroyIcon icon =
   failIfFalse_ "DestroyIcon" $ c_DestroyIcon icon
 foreign import WINDOWS_CCONV unsafe "windows.h DestroyIcon"
-  c_DestroyIcon :: HICON -> IO Bool
+  c_DestroyIcon :: HICON -> IO BOOL
 
 ----------------------------------------------------------------
 -- End
