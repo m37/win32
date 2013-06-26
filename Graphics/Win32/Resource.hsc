@@ -30,7 +30,7 @@ beginUpdateResource name del =
   withTString name $ \ c_name ->
   failIfNull "BeginUpdateResource" $ c_BeginUpdateResource c_name del
 foreign import WINDOWS_CCONV unsafe "windows.h BeginUpdateResourceW"
-  c_BeginUpdateResource :: LPCTSTR -> Bool -> IO HANDLE
+  c_BeginUpdateResource :: LPCTSTR -> BOOL -> IO HANDLE
 
 type ResourceImageType = UINT
 
@@ -50,11 +50,11 @@ copyImage h ty x y flags =
 foreign import WINDOWS_CCONV unsafe "windows.h CopyImage"
   c_CopyImage :: HANDLE -> ResourceImageType -> Int -> Int -> UINT -> IO HANDLE
 
-endUpdateResource :: HANDLE -> BOOL -> IO ()
+endUpdateResource :: HANDLE -> Bool -> IO ()
 endUpdateResource h discard =
   failIfFalse_ "EndUpdateResource" $ c_EndUpdateResource h discard
 foreign import WINDOWS_CCONV unsafe "windows.h EndUpdateResourceW"
-  c_EndUpdateResource :: HANDLE -> BOOL -> IO Bool
+  c_EndUpdateResource :: HANDLE -> BOOL -> IO BOOL
 
 type ResourceType = LPCTSTR
 
@@ -145,4 +145,4 @@ updateResource h ty name lang p_data data_len =
   failIfFalse_ "UpdateResource" $
     c_UpdateResource h ty c_name lang p_data data_len
 foreign import WINDOWS_CCONV unsafe "windows.h UpdateResourceW"
-  c_UpdateResource :: HANDLE -> LPCTSTR -> LPCTSTR -> WORD -> Addr -> DWORD -> IO Bool
+  c_UpdateResource :: HANDLE -> LPCTSTR -> LPCTSTR -> WORD -> Addr -> DWORD -> IO BOOL
