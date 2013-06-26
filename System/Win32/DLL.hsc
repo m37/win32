@@ -30,13 +30,13 @@ disableThreadLibraryCalls :: HMODULE -> IO ()
 disableThreadLibraryCalls hmod =
   failIfFalse_ "DisableThreadLibraryCalls" $ c_DisableThreadLibraryCalls hmod
 foreign import WINDOWS_CCONV unsafe "windows.h DisableThreadLibraryCalls"
-  c_DisableThreadLibraryCalls :: HMODULE -> IO Bool
+  c_DisableThreadLibraryCalls :: HMODULE -> IO BOOL
 
 freeLibrary :: HMODULE -> IO ()
 freeLibrary hmod =
   failIfFalse_ "FreeLibrary" $ c_FreeLibrary hmod
 foreign import WINDOWS_CCONV unsafe "windows.h FreeLibrary"
-  c_FreeLibrary :: HMODULE -> IO Bool
+  c_FreeLibrary :: HMODULE -> IO BOOL
 
 {-# CFILES cbits/HsWin32.c #-}
 foreign import ccall "HsWin32.h &FreeLibraryFinaliser"
