@@ -255,8 +255,8 @@ foreign import ccall unsafe "HsGDI.h"
 -- RasterOp macro
 ----------------------------------------------------------------
 
-type RasterOp3 = Word32
-type RasterOp4 = Word32
+type RasterOp3 = DWORD
+type RasterOp4 = DWORD
 
 foreign import ccall unsafe "HsGDI.h"
   mAKEROP4 :: RasterOp3 -> RasterOp3 -> RasterOp4
