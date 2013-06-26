@@ -50,7 +50,7 @@ deleteBrush :: HBRUSH -> IO ()
 deleteBrush brush =
   failIfFalse_ "DeleteBrush" $ c_DeleteBrush brush
 foreign import WINDOWS_CCONV unsafe "windows.h DeleteObject"
-  c_DeleteBrush :: HBRUSH -> IO Bool
+  c_DeleteBrush :: HBRUSH -> IO BOOL
 
 ----------------------------------------------------------------
 
