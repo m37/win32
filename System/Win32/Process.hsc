@@ -58,7 +58,7 @@ foreign import WINDOWS_CCONV unsafe "windows.h OpenProcess"
     c_OpenProcess :: ProcessAccessRights -> BOOL -> ProcessId -> IO ProcessHandle
 
 
-openProcess :: ProcessAccessRights -> BOOL -> ProcessId -> IO ProcessHandle
+openProcess :: ProcessAccessRights -> Bool -> ProcessId -> IO ProcessHandle
 openProcess r inh i = failIfNull "OpenProcess" $ c_OpenProcess r inh i
 
 foreign import WINDOWS_CCONV unsafe "windows.h GetProcessId"
