@@ -72,24 +72,24 @@ type ButtonState = UINT
  , bST_UNCHECKED        = BST_UNCHECKED
  }
 
-checkDlgButton :: HWND -> Int -> ButtonState -> IO ()
+checkDlgButton :: HWND -> CInt -> ButtonState -> IO ()
 checkDlgButton dialog button check =
   failIfFalse_ "CheckDlgButton" $ c_CheckDlgButton dialog button check
 foreign import WINDOWS_CCONV unsafe "windows.h CheckDlgButton"
-  c_CheckDlgButton :: HWND -> Int -> ButtonState -> IO Bool
+  c_CheckDlgButton :: HWND -> CInt -> ButtonState -> IO BOOL
 
-checkRadioButton :: HWND -> Int -> Int -> Int -> IO ()
+checkRadioButton :: HWND -> CInt -> CInt -> CInt -> IO ()
 checkRadioButton dialog first_button last_button check =
   failIfFalse_ "CheckRadioButton" $
     c_CheckRadioButton dialog first_button last_button check
 foreign import WINDOWS_CCONV unsafe "windows.h CheckRadioButton"
-  c_CheckRadioButton :: HWND -> Int -> Int -> Int -> IO Bool
+  c_CheckRadioButton :: HWND -> CInt -> CInt -> CInt -> IO BOOL
 
-isDlgButtonChecked :: HWND -> Int -> IO ButtonState
+isDlgButtonChecked :: HWND -> CInt -> IO ButtonState
 isDlgButtonChecked wnd button =
   failIfZero "IsDlgButtonChecked" $ c_IsDlgButtonChecked wnd button
 foreign import WINDOWS_CCONV unsafe "windows.h IsDlgButtonChecked"
-  c_IsDlgButtonChecked :: HWND -> Int -> IO ButtonState
+  c_IsDlgButtonChecked :: HWND -> CInt -> IO ButtonState
 
 
 -- == ComboBoxes aka. pop up list boxes/selectors.
