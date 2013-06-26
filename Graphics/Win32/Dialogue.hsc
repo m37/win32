@@ -50,7 +50,7 @@ mkResource res = return (castUINTPtrToPtr (fromIntegral res))
 mkDialogTemplateFromResource :: Int -> IO DTemplate
 mkDialogTemplateFromResource = mkResource
 
-type DialogProc = HWND -> WindowMessage -> WPARAM -> LPARAM -> IO Int
+type DialogProc = HWND -> WindowMessage -> WPARAM -> LPARAM -> IO INT_PTR
 
 marshall_dialogProc_ :: DialogProc -> IO (FunPtr DialogProc)
 marshall_dialogProc_ cl = mkDialogClosure cl
@@ -248,14 +248,14 @@ getDlgItem dlg item =
 foreign import WINDOWS_CCONV unsafe "windows.h GetDlgItem"
   c_GetDlgItem :: HWND -> Int -> IO HWND
 
-getDlgItemInt :: HWND -> Int -> Bool -> IO Int
+getDlgItemInt :: HWND -> CInt -> Bool -> IO CInt
 getDlgItemInt dlg item signed =
   alloca $ \ p_trans -> do
   res <- c_GetDlgItemInt dlg item p_trans signed
   failIfFalse_ "GetDlgItemInt" $ peek p_trans
   return (fromIntegral res)
 foreign import WINDOWS_CCONV "windows.h GetDlgItemInt"
-  c_GetDlgItemInt :: HWND -> Int -> Ptr Bool -> Bool -> IO UINT
+  c_GetDlgItemInt :: HWND -> CInt -> Ptr BOOL -> BOOL -> IO UINT
 
 getDlgItemText :: HWND -> Int -> Int -> IO String
 getDlgItemText dlg item size =
@@ -284,25 +284,25 @@ mapDialogRect :: HWND -> LPRECT -> IO ()
 mapDialogRect dlg p_rect =
   failIfFalse_ "MapDialogRect" $ c_MapDialogRect dlg p_rect
 foreign import WINDOWS_CCONV unsafe "windows.h MapDialogRect"
-  c_MapDialogRect :: HWND -> LPRECT -> IO Bool
+  c_MapDialogRect :: HWND -> LPRECT -> IO BOOL
 
 -- No MessageBox* funs in here just yet.
 
 foreign import WINDOWS_CCONV "windows.h SendDlgItemMessageW"
   sendDlgItemMessage :: HWND -> Int -> WindowMessage -> WPARAM -> LPARAM -> IO LONG
 
-setDlgItemInt :: HWND -> Int -> UINT -> BOOL -> IO ()
+setDlgItemInt :: HWND -> Int -> UINT -> Bool -> IO ()
 setDlgItemInt dlg item value signed =
   failIfFalse_ "SetDlgItemInt" $ c_SetDlgItemInt dlg item value signed
 foreign import WINDOWS_CCONV "windows.h SetDlgItemInt"
-  c_SetDlgItemInt :: HWND -> Int -> UINT -> BOOL -> IO Bool
+  c_SetDlgItemInt :: HWND -> Int -> UINT -> BOOL -> IO BOOL
 
 setDlgItemText :: HWND -> Int -> String -> IO ()
 setDlgItemText dlg item str =
   withTString str $ \ c_str ->
   failIfFalse_ "SetDlgItemText" $ c_SetDlgItemText dlg item c_str
 foreign import WINDOWS_CCONV "windows.h SetDlgItemTextW"
-  c_SetDlgItemText :: HWND -> Int -> LPCTSTR -> IO Bool
+  c_SetDlgItemText :: HWND -> Int -> LPCTSTR -> IO BOOL
 
 #{enum WindowStyle,
  , dS_3DLOOK            = DS_3DLOOK
