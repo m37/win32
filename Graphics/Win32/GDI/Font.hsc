@@ -45,12 +45,12 @@ import Foreign
 -- Types
 ----------------------------------------------------------------
 
-type CharSet        = UINT
-type PitchAndFamily = UINT
-type OutPrecision   = UINT
-type ClipPrecision  = UINT
-type FontQuality    = UINT
-type FontWeight     = Word32
+type CharSet        = DWORD
+type PitchAndFamily = DWORD
+type OutPrecision   = DWORD
+type ClipPrecision  = DWORD
+type FontQuality    = DWORD
+type FontWeight     = CInt
 type FaceName       = String
 
 -- A FaceName is a string no more that LF_FACESIZE in length
@@ -140,7 +140,7 @@ pitchMask  = 0x0F
 -- was: ErrorMsg("CreateFont","NullHandle")
 
 createFont
-     :: INT -> INT -> INT -> INT
+     :: CInt -> CInt -> CInt -> CInt
      -> FontWeight -> Bool -> Bool -> Bool
      -> CharSet -> OutPrecision -> ClipPrecision
      -> FontQuality -> PitchAndFamily -> FaceName
@@ -148,11 +148,11 @@ createFont
 createFont h w esc orient wt ital under strike cset out clip q pf face =
   withTString face $ \ c_face ->
   failIfNull "CreateFont" $
-    c_CreateFont h w esc orient wt ital under strike cset out clip q pf c_face
+    c_CreateFont h w esc orient wt (fromBool ital) (fromBool under) (fromBool strike) cset out clip q pf c_face
 foreign import WINDOWS_CCONV unsafe "windows.h CreateFontW"
   c_CreateFont
-     :: INT -> INT -> INT -> INT
-     -> FontWeight -> Bool -> Bool -> Bool
+     :: CInt -> CInt -> CInt -> CInt
+     -> FontWeight -> DWORD -> DWORD -> DWORD
      -> CharSet -> OutPrecision -> ClipPrecision
      -> FontQuality -> PitchAndFamily -> LPCTSTR
      -> IO HFONT
