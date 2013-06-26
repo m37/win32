@@ -46,7 +46,7 @@ deletePen :: HPEN -> IO ()
 deletePen pen =
   failIfFalse_ "DeletePen" $ c_DeletePen pen
 foreign import WINDOWS_CCONV unsafe "windows.h DeleteObject"
-  c_DeletePen :: HPEN -> IO Bool
+  c_DeletePen :: HPEN -> IO BOOL
 
 ----------------------------------------------------------------
 -- Creating pens
