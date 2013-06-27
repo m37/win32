@@ -39,7 +39,7 @@ import Control.Concurrent
 -- Enumeration types
 ----------------------------------------------------------------
 
-type AccessMode   = UINT
+type AccessMode   = DWORD
 
 gENERIC_NONE :: AccessMode
 gENERIC_NONE = 0
@@ -66,7 +66,7 @@ gENERIC_NONE = 0
 
 ----------------------------------------------------------------
 
-type ShareMode   = UINT
+type ShareMode   = DWORD
 
 fILE_SHARE_NONE :: ShareMode
 fILE_SHARE_NONE = 0
@@ -78,7 +78,7 @@ fILE_SHARE_NONE = 0
 
 ----------------------------------------------------------------
 
-type CreateMode   = UINT
+type CreateMode   = DWORD
 
 #{enum CreateMode,
  , cREATE_NEW           = CREATE_NEW
@@ -90,7 +90,7 @@ type CreateMode   = UINT
 
 ----------------------------------------------------------------
 
-type FileAttributeOrFlag   = UINT
+type FileAttributeOrFlag   = DWORD
 
 #{enum FileAttributeOrFlag,
  , fILE_ATTRIBUTE_READONLY      = FILE_ATTRIBUTE_READONLY
@@ -365,7 +365,7 @@ getBinaryType name =
     c_GetBinaryType c_name p_btype
   peek p_btype
 foreign import WINDOWS_CCONV unsafe "windows.h GetBinaryTypeW"
-  c_GetBinaryType :: LPCTSTR -> Ptr DWORD -> IO BOOL
+  c_GetBinaryType :: LPCTSTR -> LPDWORD -> IO BOOL
 
 ----------------------------------------------------------------
 -- HANDLE operations
