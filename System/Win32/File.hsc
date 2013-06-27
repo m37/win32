@@ -589,7 +589,7 @@ getDiskFreeSpace path =
   nclusters <- peek p_nclusters
   return (sectors, bytes, nfree, nclusters)
 foreign import WINDOWS_CCONV unsafe "windows.h GetDiskFreeSpaceW"
-  c_GetDiskFreeSpace :: LPCTSTR -> Ptr DWORD -> Ptr DWORD -> Ptr DWORD -> Ptr DWORD -> IO BOOL
+  c_GetDiskFreeSpace :: LPCTSTR -> LPDWORD -> LPDWORD -> LPDWORD -> LPDWORD -> IO BOOL
 
 setVolumeLabel :: String -> String -> IO ()
 setVolumeLabel path name =
