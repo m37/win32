@@ -173,7 +173,7 @@ nullFinalHANDLE :: ForeignPtr a
 nullFinalHANDLE = unsafePerformIO (newForeignPtr_ nullPtr)
 
 iNVALID_HANDLE_VALUE :: HANDLE
-iNVALID_HANDLE_VALUE = castUINTPtrToPtr (-1)
+iNVALID_HANDLE_VALUE = intPtrToPtr (-1)
 
 ----------------------------------------------------------------
 -- Errors
