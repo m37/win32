@@ -41,7 +41,10 @@ import Numeric (showHex)
 
 type BOOL          = Bool
 type BYTE          = Word8
+type CHAR          = CChar
 type UCHAR         = CUChar
+type WCHAR         = CWchar
+type SHORT         = Int16
 type USHORT        = Word16
 type UINT          = Word32
 type INT           = Int32
@@ -50,9 +53,11 @@ type DWORD         = Word32
 type LONG          = Int32
 type FLOAT         = Float
 type LARGE_INTEGER = Int64
+type ULARGE_INTEGER = Word64
 
 type INT_PTR       = CIntPtr
 type UINT_PTR      = CUIntPtr
+type LONG_PTR      = CIntPtr
 type ULONG_PTR     = CUIntPtr
 
 -- Not really a basic type, but used in many places
@@ -63,10 +68,10 @@ type DDWORD        = Word64
 type MbString      = Maybe String
 type MbINT         = Maybe INT
 
-type ATOM          = UINT
-type WPARAM        = UINT
-type LPARAM        = LONG
-type LRESULT       = LONG
+type ATOM          = WORD
+type WPARAM        = UINT_PTR
+type LPARAM        = LONG_PTR
+type LRESULT       = LONG_PTR
 type SIZE_T        = ULONG_PTR
 
 type MbATOM        = Maybe ATOM
@@ -84,9 +89,9 @@ type LPBOOL        = Ptr BOOL
 type LPBYTE        = Ptr BYTE
 type PUCHAR        = Ptr UCHAR
 type LPDWORD       = Ptr DWORD
-type LPSTR         = Ptr CChar
+type LPSTR         = Ptr CHAR
 type LPCSTR        = LPSTR
-type LPWSTR        = Ptr CWchar
+type LPWSTR        = Ptr WCHAR
 type LPCWSTR       = LPWSTR
 type LPTSTR        = Ptr TCHAR
 type LPCTSTR       = LPTSTR
@@ -121,7 +126,7 @@ peekTStringLen :: (LPCTSTR, Int) -> IO String
 newTString     :: String -> IO LPCTSTR
 
 -- UTF-16 version:
-type TCHAR     = CWchar
+type TCHAR     = WCHAR
 withTString    = withCWString
 withTStringLen = withCWStringLen
 peekTString    = peekCWString
