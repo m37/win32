@@ -385,10 +385,10 @@ foreign import WINDOWS_CCONV "windows.h DebugActiveProcess"
 --     c_DebugActiveProcessStop :: DWORD -> IO Bool
 
 foreign import WINDOWS_CCONV "windows.h ReadProcessMemory" c_ReadProcessMemory :: 
-    PHANDLE -> Ptr () -> Ptr Word8 -> CSize -> Ptr CSize -> IO BOOL
+    PHANDLE -> Ptr () -> Ptr Word8 -> SIZE_T -> Ptr SIZE_T -> IO BOOL
 
 foreign import WINDOWS_CCONV "windows.h WriteProcessMemory" c_WriteProcessMemory ::
-    PHANDLE -> Ptr () -> Ptr Word8 -> CSize -> Ptr CSize -> IO BOOL
+    PHANDLE -> Ptr () -> Ptr Word8 -> SIZE_T -> Ptr SIZE_T -> IO BOOL
 
 foreign import WINDOWS_CCONV "windows.h GetThreadContext"
     c_GetThreadContext :: THANDLE -> Ptr () -> IO BOOL
