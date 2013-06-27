@@ -53,6 +53,7 @@ type LARGE_INTEGER = Int64
 
 type INT_PTR       = CIntPtr
 type UINT_PTR      = CUIntPtr
+type ULONG_PTR     = CUIntPtr
 
 -- Not really a basic type, but used in many places
 type DDWORD        = Word64
@@ -66,7 +67,7 @@ type ATOM          = UINT
 type WPARAM        = UINT
 type LPARAM        = LONG
 type LRESULT       = LONG
-type SIZE_T        = DWORD
+type SIZE_T        = ULONG_PTR
 
 type MbATOM        = Maybe ATOM
 
