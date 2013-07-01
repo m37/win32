@@ -127,7 +127,7 @@ searchPath path filename ext =
 -- Support for API calls that are passed a fixed-size buffer and tell
 -- you via the return value if the buffer was too small.  In that
 -- case, we double the buffer size and try again.
-try :: String -> (LPTSTR -> UINT -> IO UINT) -> UINT -> IO String
+try :: Integral a => String -> (LPTSTR -> a -> IO a) -> a -> IO String
 try loc f n = do
    e <- allocaArray (fromIntegral n) $ \lptstr -> do
 	  r <- failIfZero loc $ f lptstr n
@@ -145,10 +145,10 @@ foreign import WINDOWS_CCONV unsafe "GetSystemDirectoryW"
   c_getSystemDirectory :: LPTSTR -> UINT -> IO UINT
 
 foreign import WINDOWS_CCONV unsafe "GetCurrentDirectoryW"
-  c_getCurrentDirectory :: DWORD -> LPTSTR -> IO UINT
+  c_getCurrentDirectory :: DWORD -> LPTSTR -> IO DWORD
 
 foreign import WINDOWS_CCONV unsafe "GetTempPathW"
-  c_getTempPath :: DWORD -> LPTSTR -> IO UINT
+  c_getTempPath :: DWORD -> LPTSTR -> IO DWORD
 
 foreign import WINDOWS_CCONV unsafe "GetFullPathNameW"
   c_GetFullPathName :: LPCTSTR -> DWORD -> LPTSTR -> Ptr LPTSTR -> IO DWORD
