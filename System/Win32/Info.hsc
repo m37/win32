@@ -59,7 +59,7 @@ import Foreign      ( Storable(sizeOf, alignment, peekByteOff, pokeByteOff,
 -- System Color
 ----------------------------------------------------------------
 
-type SystemColor   = UINT
+type SystemColor   = INT
 
 -- ToDo: This list is out of date.
 
@@ -259,7 +259,7 @@ getSystemInfo = alloca $ \ret -> do
 -- System metrics
 ----------------------------------------------------------------
 
-type SMSetting = UINT
+type SMSetting = INT
 
 #{enum SMSetting,
  , sM_ARRANGE           = SM_ARRANGE
