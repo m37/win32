@@ -34,13 +34,13 @@ foreign import WINDOWS_CCONV unsafe "windows.h GetConsoleCP"
 	getConsoleCP :: IO UINT
 
 foreign import WINDOWS_CCONV unsafe "windows.h SetConsoleCP"
-	setConsoleCP :: UINT -> IO ()
+	setConsoleCP :: UINT -> IO BOOL
 
 foreign import WINDOWS_CCONV unsafe "windows.h GetConsoleOutputCP"
 	getConsoleOutputCP :: IO UINT
 
 foreign import WINDOWS_CCONV unsafe "windows.h SetConsoleOutputCP"
-	setConsoleOutputCP :: UINT -> IO ()
+	setConsoleOutputCP :: UINT -> IO BOOL
 
 type CtrlEvent = DWORD
 #{enum CtrlEvent,
