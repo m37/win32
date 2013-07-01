@@ -45,10 +45,10 @@ foreign import ccall "HsWin32.h &FreeLibraryFinaliser"
 getModuleFileName :: HMODULE -> IO String
 getModuleFileName hmod =
   allocaArray 512 $ \ c_str -> do
-  failIfFalse_ "GetModuleFileName" $ c_GetModuleFileName hmod c_str 512
+  failIf_ (== 0) "GetModuleFileName" $ c_GetModuleFileName hmod c_str 512
   peekTString c_str
 foreign import WINDOWS_CCONV unsafe "windows.h GetModuleFileNameW"
-  c_GetModuleFileName :: HMODULE -> LPTSTR -> Int -> IO Bool
+  c_GetModuleFileName :: HMODULE -> LPTSTR -> DWORD -> IO DWORD
 
 getModuleHandle :: Maybe String -> IO HMODULE
 getModuleHandle mb_name =
@@ -64,12 +64,12 @@ getProcAddress hmod procname =
 foreign import WINDOWS_CCONV unsafe "windows.h GetProcAddress"
   c_GetProcAddress :: HMODULE -> LPCSTR -> IO Addr
 
-loadLibrary :: String -> IO HINSTANCE
+loadLibrary :: String -> IO HMODULE
 loadLibrary name =
   withTString name $ \ c_name ->
   failIfNull "LoadLibrary" $ c_LoadLibrary c_name
 foreign import WINDOWS_CCONV unsafe "windows.h LoadLibraryW"
-  c_LoadLibrary :: LPCTSTR -> IO HINSTANCE
+  c_LoadLibrary :: LPCTSTR -> IO HMODULE
 
 type LoadLibraryFlags = DWORD
 
@@ -78,9 +78,9 @@ type LoadLibraryFlags = DWORD
  , lOAD_WITH_ALTERED_SEARCH_PATH = LOAD_WITH_ALTERED_SEARCH_PATH
  }
 
-loadLibraryEx :: String -> HANDLE -> LoadLibraryFlags -> IO HINSTANCE
+loadLibraryEx :: String -> HANDLE -> LoadLibraryFlags -> IO HMODULE
 loadLibraryEx name h flags =
   withTString name $ \ c_name ->
   failIfNull "LoadLibraryEx" $ c_LoadLibraryEx c_name h flags
 foreign import WINDOWS_CCONV unsafe "windows.h LoadLibraryExW"
-  c_LoadLibraryEx :: LPCTSTR -> HANDLE -> LoadLibraryFlags -> IO HINSTANCE
+  c_LoadLibraryEx :: LPCTSTR -> HANDLE -> LoadLibraryFlags -> IO HMODULE
