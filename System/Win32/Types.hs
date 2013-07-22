@@ -157,8 +157,7 @@ newForeignHANDLE = newForeignPtr deleteObjectFinaliser
 handleToWord :: HANDLE -> UINT_PTR
 handleToWord = castPtrToUINTPtr
 
-type   HKEY        = ForeignHANDLE
-type   PKEY        = HANDLE
+type   HKEY        = HANDLE
 
 nullHANDLE :: HANDLE
 nullHANDLE = nullPtr
