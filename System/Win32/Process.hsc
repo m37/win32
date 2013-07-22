@@ -70,7 +70,7 @@ getProcessId h = failIfZero "GetProcessId" $ c_GetProcessId h
 type Th32SnapHandle = HANDLE
 type Th32SnapFlags = DWORD
 -- | ProcessId, number of threads, parent ProcessId, process base priority, path of executable file
-type ProcessEntry32 = (ProcessId, Int, ProcessId, LONG, String)
+type ProcessEntry32 = (ProcessId, DWORD, ProcessId, LONG, String)
 
 #{enum Th32SnapFlags,
     , tH32CS_SNAPALL        = TH32CS_SNAPALL
